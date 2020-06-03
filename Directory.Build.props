@@ -1,0 +1,14 @@
+﻿<Project>
+
+  <PropertyGroup>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+    <RepositoryUrl>https://github.com/yang-er/EFcoreMongoProvider</RepositoryUrl>
+    <PackageTags>MongoDB;Entity Framework Core;entity-framework-core;EF;Data;O/RM</PackageTags>
+    <Product>MongoDB Provider for Entity Framework Core</Product>
+    <DebugType Condition="'$(Configuration)' == 'Debug' AND '$(OS)' == 'Windows_NT'">full</DebugType>
+    <LangVersion>8.0</LangVersion>
+    <NoWarn>$(NoWarn);CS8032;EF1001;</NoWarn>
+  </PropertyGroup>
+
+</Project>
