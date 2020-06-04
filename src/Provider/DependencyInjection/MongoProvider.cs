@@ -1,12 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 
 namespace Microsoft.EntityFrameworkCore.Mongo.DependencyInjection
 {
-    public class MongoProvider : IDbContextOptionsExtension, IDatabaseProvider
+    public class MongoProvider : IDbContextOptionsExtension
     {
         private MongoProviderInfo? _info;
 
@@ -17,8 +16,6 @@ namespace Microsoft.EntityFrameworkCore.Mongo.DependencyInjection
         public string DatabaseName { get; }
 
         public DbContextOptionsExtensionInfo Info => _info ??= new MongoProviderInfo(this);
-
-        public string Name => "MongoDB";
 
         public MongoProvider(string connect, string databaseName)
         {
@@ -31,16 +28,10 @@ namespace Microsoft.EntityFrameworkCore.Mongo.DependencyInjection
         {
             var builder = new MongoServiceBuilder(services);
             builder.TryAddCoreServices();
-            services.AddSingleton<IDatabaseProvider>(this);
         }
 
         public void Validate(IDbContextOptions options)
         {
-        }
-
-        public bool IsConfigured(IDbContextOptions options)
-        {
-            return !string.IsNullOrEmpty(ConnectString) && !string.IsNullOrEmpty(DatabaseName);
         }
     }
 }

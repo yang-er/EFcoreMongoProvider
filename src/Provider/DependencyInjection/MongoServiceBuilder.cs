@@ -36,6 +36,8 @@ namespace Microsoft.EntityFrameworkCore.Mongo.DependencyInjection
                 map.TryAddScoped<WriteModelFactoryCache, WriteModelFactoryCache>();
                 map.TryAddScoped<IProviderConventionSetBuilder, MongoConventionSetBuilder>();
                 map.TryAddScoped<MongoConventionSetBuilderDependencies, MongoConventionSetBuilderDependencies>();
+                map.TryAddScoped<IDbContextTransactionManager, MongoContextTransactionManager2>();
+                map.TryAddSingleton<IDatabaseProvider, DatabaseProvider<MongoProvider>>();
                 map.TryAddSingleton<ITypeMappingSource, MongoTypeMappingSource>();
                 map.TryAddSingleton<IInternalEntityEntryFactory, MongoEntityEntryFactory>();
                 map.TryAddSingleton<IModelValidator, MongoModelValidator>();
