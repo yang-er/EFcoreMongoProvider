@@ -12,24 +12,23 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Query
         QueryableMethodTranslatingExpressionVisitor
     {
         private readonly IModel _model;
+        private readonly ISqlExpressionFactory _sqlExpressionFactory;
+        private readonly MongoSqlTranslatingExpressionVisitor _sqlTranslator;
 
         public MongoQueryableMethodTranslatingExpressionVisitor(
             QueryableMethodTranslatingExpressionVisitorDependencies dependencies,
+            ISqlExpressionFactory sqlExpressionFactory,
+            MongoSqlTranslatingExpressionVisitor sqlTranslator,
             IModel model)
             : base(dependencies, subquery: false)
         {
             _model = model;
-        }
-
-        protected MongoQueryableMethodTranslatingExpressionVisitor(
-            MongoQueryableMethodTranslatingExpressionVisitor parentVisitor)
-            : base(parentVisitor.Dependencies, true)
-        {
-            _model = parentVisitor._model;
+            _sqlExpressionFactory = sqlExpressionFactory;
+            _sqlTranslator = sqlTranslator;
         }
 
         protected override QueryableMethodTranslatingExpressionVisitor CreateSubqueryVisitor()
-            => new MongoQueryableMethodTranslatingExpressionVisitor(this);
+            => throw new InvalidOperationException();
 
         public override ShapedQueryExpression TranslateSubquery(Expression expression)
             => throw new InvalidOperationException(CoreStrings.TranslationFailed(expression.Print()));
@@ -37,7 +36,7 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Query
         protected override ShapedQueryExpression CreateShapedQueryExpression(Type elementType)
         {
             var entityType = _model.FindEntityType(elementType);
-            var selectExpression = default(Expression);// _sqlExpressionFactory.Select(entityType);
+            var selectExpression = _sqlExpressionFactory.Select(entityType);
 
             return new ShapedQueryExpression(
                 selectExpression,
@@ -209,7 +208,29 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Query
             LambdaExpression predicate,
             Type returnType,
             bool returnDefault)
-            => null;
+        {
+            if (predicate != null)
+            {
+                source = TranslateWhere(source, predicate);
+                if (source == null)
+                {
+                    return null;
+                }
+            }
+
+            var selectExpression = (SelectExpression)source.QueryExpression;
+            selectExpression.ApplyLimit(TranslateExpression(Expression.Constant(2)));
+
+            if (source.ShaperExpression.Type != returnType)
+            {
+                source.ShaperExpression = Expression.Convert(source.ShaperExpression, returnType);
+            }
+
+            return source;
+        }
+
+        private SqlExpression TranslateExpression(Expression expression)
+            => _sqlTranslator.Translate(expression);
 
         protected override ShapedQueryExpression? TranslateSkip(
             ShapedQueryExpression source,

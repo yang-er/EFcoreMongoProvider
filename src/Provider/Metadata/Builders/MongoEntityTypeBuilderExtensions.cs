@@ -79,6 +79,18 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Metadata.Builders
         }
 
         /// <summary>
+        ///     Returns the name of the parent property to which the entity type is mapped.
+        /// </summary>
+        /// <param name="entityType"> The entity type to get the containing property name for. </param>
+        /// <returns> The name of the parent property to which the entity type is mapped. </returns>
+        public static string? GetContainingPropertyName(this IEntityType entityType) =>
+            entityType[MongoAnnotationNames.NavigationName] as string
+            ?? GetDefaultContainingPropertyName(entityType);
+
+        private static string? GetDefaultContainingPropertyName(IEntityType entityType)
+            => entityType.FindOwnership()?.PrincipalToDependent.Name;
+
+        /// <summary>
         ///     Sets whether the identity of the <see cref="IEntityType"/> being built should be assigned by MongoDb on insert.
         /// </summary>
         /// <param name="entityTypeBuilder">The <see cref="EntityTypeBuilder"/> to annotate.</param>

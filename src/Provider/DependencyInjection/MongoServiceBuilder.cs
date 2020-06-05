@@ -43,12 +43,16 @@ namespace Microsoft.EntityFrameworkCore.Mongo.DependencyInjection
                 map.TryAddScoped<WriteModelFactoryCache, WriteModelFactoryCache>();
                 map.TryAddScoped<IProviderConventionSetBuilder, MongoConventionSetBuilder>();
                 map.TryAddScoped<IDbContextTransactionManager, MongoContextTransactionManager2>();
+                map.TryAddScoped<IMemberTranslatorProvider, MongoMemberTranslatorProvider>();
+                map.TryAddScoped<IMethodCallTranslatorProvider, MongoMethodCallTranslatorProvider>();
+                map.TryAddScoped<ISqlExpressionFactory, SqlExpressionFactory>();
+                map.TryAddScoped<IQuerySqlGeneratorFactory, QuerySqlGeneratorFactory>();
+                map.TryAddScoped<IQueryableMethodTranslatingExpressionVisitorFactory, MongoQueryableMethodTranslatingExpressionVisitorFactory>();
                 map.TryAddSingleton<IDatabaseProvider, DatabaseProvider<MongoProvider>>();
                 map.TryAddSingleton<ITypeMappingSource, MongoTypeMappingSource>();
                 //map.TryAddSingleton<IInternalEntityEntryFactory, MongoEntityEntryFactory>();
                 map.TryAddSingleton<IModelValidator, MongoModelValidator>();
                 map.TryAddSingleton<LoggingDefinitions, MongoLoggingDefinitions>();
-                map.TryAddSingleton<IQueryableMethodTranslatingExpressionVisitorFactory, MongoQueryableMethodTranslatingExpressionVisitorFactory>();
                 map.TryAddSingleton<IShapedQueryCompilingExpressionVisitorFactory, MongoShapedQueryCompilingExpressionVisitorFactory>();
             });
 
