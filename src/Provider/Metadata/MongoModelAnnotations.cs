@@ -12,12 +12,6 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Metadata
         {
         }
 
-        public virtual string Database
-        {
-            get => GetAnnotation<string>(MongoAnnotationNames.Database);
-            set => SetAnnotation(MongoAnnotationNames.Database, Check.NotEmpty(value, nameof(Database)));
-        }
-
         public virtual MongoDatabaseSettings DatabaseSettings
         {
             get => GetAnnotation<MongoDatabaseSettings>(MongoAnnotationNames.DatabaseSettings);

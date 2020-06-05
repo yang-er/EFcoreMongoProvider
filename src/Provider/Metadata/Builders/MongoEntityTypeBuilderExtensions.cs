@@ -15,7 +15,7 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Metadata.Builders
         /// <param name="entityTypeBuilder">The <see cref="EntityTypeBuilder"/> to annotate.</param>
         /// <param name="collectionName">The name of the MongoDB collection.</param>
         /// <returns>The <paramref name="entityTypeBuilder"/>, such that calls be chained.</returns>
-        public static EntityTypeBuilder ForMongoFromCollection(
+        public static EntityTypeBuilder ToCollection(
             this EntityTypeBuilder entityTypeBuilder,
             string collectionName)
         {
@@ -32,13 +32,12 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Metadata.Builders
         /// <param name="entityTypeBuilder">The <see cref="EntityTypeBuilder"/> to annotate.</param>
         /// <param name="discriminator">The discriminator for the <see cref="IEntityType"/>.</param>
         /// <returns>The <paramref name="entityTypeBuilder"/>, such that calls be chained.</returns>
-        public static EntityTypeBuilder ForMongoHasDiscriminator(
+        public static EntityTypeBuilder HasDiscriminator(
             this EntityTypeBuilder entityTypeBuilder,
             string discriminator)
         {
             Check.NotNull(entityTypeBuilder, nameof(entityTypeBuilder));
             Check.NotEmpty(discriminator, nameof(discriminator));
-
             entityTypeBuilder.MongoDb().Discriminator = discriminator;
             return entityTypeBuilder;
         }
@@ -51,9 +50,9 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Metadata.Builders
         ///     <code>true</code> if a discriminator is required to query instances of the entity; otherwise <code>false</code>.
         /// </param>
         /// <returns>The <paramref name="entityTypeBuilder"/>, such that calls be chained.</returns>
-        public static EntityTypeBuilder ForMongoDiscriminatorIsRequired(
+        public static EntityTypeBuilder IsDiscriminatorRequired(
             this EntityTypeBuilder entityTypeBuilder,
-            bool discriminatorIsRequired)
+            bool discriminatorIsRequired = true)
         {
             Check.NotNull(entityTypeBuilder, nameof(entityTypeBuilder));
 
@@ -69,9 +68,9 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Metadata.Builders
         ///     <code>true</code> if the <see cref="IEntityType"/> is the root entity type; otherwise <code>false</code>.
         /// </param>
         /// <returns>The <paramref name="entityTypeBuilder"/>, such that calls be chained.</returns>
-        public static EntityTypeBuilder ForMongoIsRootType(
+        public static EntityTypeBuilder IsRootType(
             this EntityTypeBuilder entityTypeBuilder,
-            bool isRootType)
+            bool isRootType = true)
         {
             Check.NotNull(entityTypeBuilder, nameof(entityTypeBuilder));
 
@@ -88,9 +87,9 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Metadata.Builders
         ///     otherwise <code>false</code>.
         /// </param>
         /// <returns>The <paramref name="entityTypeBuilder"/>, such that calls be chained.</returns>
-        public static EntityTypeBuilder ForMongoAssignIdOnInsert(
+        public static EntityTypeBuilder AssignIdOnInsert(
             this EntityTypeBuilder entityTypeBuilder,
-            bool assignIdOnInsert)
+            bool assignIdOnInsert = true)
         {
             Check.NotNull(entityTypeBuilder, nameof(entityTypeBuilder));
 

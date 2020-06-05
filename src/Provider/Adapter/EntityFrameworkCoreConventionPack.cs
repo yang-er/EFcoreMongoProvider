@@ -33,7 +33,6 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Adapter
             {
                 new AbstractBaseClassConvention(),
                 new KeyAttributeConvention(),
-                new NavigationSerializationMemberMapConvention(),
                 new NotMappedAttributeConvention()
             });
         }

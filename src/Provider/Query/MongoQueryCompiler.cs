@@ -1,31 +1,32 @@
-﻿using Microsoft.EntityFrameworkCore.Query;
+﻿using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore.Query.Internal;
-using System;
-using System.Linq.Expressions;
-using System.Threading;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Microsoft.EntityFrameworkCore.Mongo.Query
 {
-    public class MongoQueryCompiler : IQueryCompiler
+    public class MongoQueryCompiler : QueryCompiler
     {
-        public Func<QueryContext, TResult> CreateCompiledAsyncQuery<TResult>(Expression query)
+        public MongoQueryCompiler(
+            IQueryContextFactory queryContextFactory,
+            ICompiledQueryCache compiledQueryCache,
+            ICompiledQueryCacheKeyGenerator compiledQueryCacheKeyGenerator,
+            IDatabase database,
+            IDiagnosticsLogger<DbLoggerCategory.Query> logger,
+            ICurrentDbContext currentContext,
+            IEvaluatableExpressionFilter evaluatableExpressionFilter,
+            IModel model)
+            : base(queryContextFactory,
+                   compiledQueryCache,
+                   compiledQueryCacheKeyGenerator,
+                   database,
+                   logger,
+                   currentContext,
+                   evaluatableExpressionFilter,
+                   model)
         {
-            throw new NotImplementedException();
-        }
-
-        public Func<QueryContext, TResult> CreateCompiledQuery<TResult>(Expression query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TResult Execute<TResult>(Expression query)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TResult ExecuteAsync<TResult>(Expression query, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
         }
     }
 }

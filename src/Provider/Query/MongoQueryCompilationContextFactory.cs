@@ -1,13 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore.Query;
-using System;
 
 namespace Microsoft.EntityFrameworkCore.Mongo.Query
 {
     public class MongoQueryCompilationContextFactory : IQueryCompilationContextFactory
     {
-        public QueryCompilationContext Create(bool async)
+        public MongoQueryCompilationContextFactory(
+            QueryCompilationContextDependencies dependencies)
         {
-            throw new InvalidOperationException();
+            Dependencies = dependencies;
         }
+
+        protected QueryCompilationContextDependencies Dependencies { get; }
+
+        public QueryCompilationContext Create(bool async)
+            => new MongoQueryCompilationContext(Dependencies, async);
     }
 }

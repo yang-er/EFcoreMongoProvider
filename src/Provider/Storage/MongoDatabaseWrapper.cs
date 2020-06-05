@@ -115,7 +115,7 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Storage
 
         public override Func<QueryContext, TResult> CompileQuery<TResult>(Expression query, bool async)
         {
-            throw new NotImplementedException();
+            return base.CompileQuery<TResult>(query, async);
         }
 
         private Task<int> InvokeUpdateEntriesAsync(

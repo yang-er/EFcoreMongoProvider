@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Utilities;
+using System.Diagnostics;
 
 namespace Microsoft.EntityFrameworkCore.Mongo.Metadata.Builders
 {
@@ -18,13 +19,13 @@ namespace Microsoft.EntityFrameworkCore.Mongo.Metadata.Builders
         ///     otherwise <code>false</code>.
         /// </param>
         /// <returns>The <paramref name="entityTypeBuilder"/>, such that calls be chained.</returns>
+        [DebuggerStepThrough]
         public static EntityTypeBuilder IsDocumentComplexType(
             this EntityTypeBuilder entityTypeBuilder,
             bool isDocumentComplexType)
         {
-            Check.NotNull(entityTypeBuilder, nameof(entityTypeBuilder));
-
-            entityTypeBuilder.Document().IsComplexType = isDocumentComplexType;
+            Check.NotNull(entityTypeBuilder, nameof(entityTypeBuilder))
+                .Document().IsComplexType = isDocumentComplexType;
             return entityTypeBuilder;
         }
     }

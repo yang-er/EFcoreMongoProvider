@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions.Infrastructure;
+using Microsoft.EntityFrameworkCore.Mongo.Adapter;
 using Microsoft.EntityFrameworkCore.Mongo.Adapter.Update;
 using Microsoft.EntityFrameworkCore.Mongo.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Mongo.Diagnostics;
@@ -20,6 +21,11 @@ namespace Microsoft.EntityFrameworkCore.Mongo.DependencyInjection
 {
     public class MongoServiceBuilder : EntityFrameworkServicesBuilder
     {
+        static MongoServiceBuilder()
+        {
+            EntityFrameworkCoreConventionPack.Register(type => true);
+        }
+
         public MongoServiceBuilder(IServiceCollection services) : base(services) { }
 
         public override EntityFrameworkServicesBuilder TryAddCoreServices()
@@ -30,18 +36,20 @@ namespace Microsoft.EntityFrameworkCore.Mongo.DependencyInjection
                 map.TryAddScoped<IDatabaseCreator, MongoDatabaseCreator>();
                 map.TryAddScoped<IMongoConnection, MongoConnection>();
                 map.TryAddScoped<IQueryCompiler, MongoQueryCompiler>();
+                map.TryAddScoped<IQueryContextFactory, MongoQueryContextFactory>();
                 map.TryAddScoped<IQueryCompilationContextFactory, MongoQueryCompilationContextFactory>();
                 map.TryAddScoped<IValueGeneratorSelector, MongoValueGeneratorSelector>();
                 map.TryAddScoped<WriteModelFactorySelector, WriteModelFactorySelector>();
                 map.TryAddScoped<WriteModelFactoryCache, WriteModelFactoryCache>();
                 map.TryAddScoped<IProviderConventionSetBuilder, MongoConventionSetBuilder>();
-                map.TryAddScoped<MongoConventionSetBuilderDependencies, MongoConventionSetBuilderDependencies>();
                 map.TryAddScoped<IDbContextTransactionManager, MongoContextTransactionManager2>();
                 map.TryAddSingleton<IDatabaseProvider, DatabaseProvider<MongoProvider>>();
                 map.TryAddSingleton<ITypeMappingSource, MongoTypeMappingSource>();
-                map.TryAddSingleton<IInternalEntityEntryFactory, MongoEntityEntryFactory>();
+                //map.TryAddSingleton<IInternalEntityEntryFactory, MongoEntityEntryFactory>();
                 map.TryAddSingleton<IModelValidator, MongoModelValidator>();
                 map.TryAddSingleton<LoggingDefinitions, MongoLoggingDefinitions>();
+                map.TryAddSingleton<IQueryableMethodTranslatingExpressionVisitorFactory, MongoQueryableMethodTranslatingExpressionVisitorFactory>();
+                map.TryAddSingleton<IShapedQueryCompilingExpressionVisitorFactory, MongoShapedQueryCompilingExpressionVisitorFactory>();
             });
 
             return base.TryAddCoreServices();
